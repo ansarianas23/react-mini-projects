@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+
+
+
 const ImageSlider = () => {
 
     const [currentImage, setCurrentImage] = useState(0);
@@ -23,7 +26,7 @@ const ImageSlider = () => {
 
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-[80vw] h-[80vh] overflow-hidden mx-auto mt-16 rounded-xl">
     <div
       className="flex transition-transform ease-in-out duration-300 transform -translate-x-full"
       style={{ transform: `translateX(${-currentImage * 100}%)` }}>
@@ -32,7 +35,7 @@ const ImageSlider = () => {
           key={index}
           src={image}
           alt={`Slide ${index + 1}`}
-          className="w-full h-full object-cover"/>
+          className="w-full h-full"/>
       ))}
     </div>
     <button onClick={prevImage} className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-30 py-5 px-3 rounded-md text-2xl"><FaAngleLeft /></button>
