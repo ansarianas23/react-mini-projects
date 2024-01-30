@@ -8,30 +8,44 @@ const PillSelectorInput = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectedUsersSet, setSelectedUsersSet] = useState(new Set());  
+  const [activeSuggestion, setActiveSuggestion] = useState(0)
   
+
+  const fetchUsers = () =>{
+    setActiveSuggestion(0)
+    if(searchText.trim() === ""){
+      setSuggestions([]);
+      return;
+    }
+    
+    fetch('https://dummyjson.com/users/search?q='+searchText)
+    .then(response => response.json())
+    .then(data => setSuggestions(data))
+    .catch((err)=>{
+      console.log(console.log(err));
+    })
+  }
+
 
   useEffect(()=>{
+    // To focus by default on input
     inputRef.current.focus();
 
-    const fetchUsers = () =>{
-      if(searchText.trim() === ""){
-        setSuggestions([]);
-        return;
-      }
-      
-      fetch('https://dummyjson.com/users/search?q='+searchText)
-      .then(response => response.json())
-      .then(data => setSuggestions(data))
-      .catch((err)=>{
-        console.log(console.log(err))
-      })
+    const timer =  setTimeout(()=>{
+      fetchUsers();
+    },300)
+
+    return ()=>{
+      clearTimeout(timer);
     }
 
-    fetchUsers();
   },[searchText])
   
+  // Function To add user as a pill
   const handleAddUser=(user)=>{
     setSelectedUsers([...selectedUsers, user]);
+    // To cache the result so same user cannot be added twice.
+    // Those who are added in pills are removed from suggestion list
     setSelectedUsersSet(new Set([...selectedUsersSet, user.email]));
     setSuggestions([]);
     setSearchText("");
@@ -52,8 +66,22 @@ const PillSelectorInput = () => {
     if(e.key === "Backspace" && e.target.value === "" && selectedUsers.length > 0){
       const lastUser = selectedUsers[selectedUsers.length - 1]
       HnadleRemoveUser(lastUser);
+      setSuggestions([])
     }
-    setSuggestions([])
+    else if (e.key === "ArrowDown" && suggestions?.users.length>0){
+      e.preventDefault();
+      setActiveSuggestion((prevIndex)=>
+        prevIndex < suggestions.users.length - 1 ? prevIndex + 1 : prevIndex
+      );
+    }
+    else if (e.key === "ArrowUp" && suggestions?.users.length>0){
+      e.preventDefault();
+      setActiveSuggestion((prevIndex)=>(prevIndex > 0 ? prevIndex-1 : 0));
+    }
+    else if (e.key === "Enter" && activeSuggestion>0 && activeSuggestion < suggestions.users.length){
+      e.preventDefault();
+      handleAddUser(suggestions.users[activeSuggestion]);
+    }
   }
 
   return (
@@ -78,14 +106,14 @@ const PillSelectorInput = () => {
         onKeyDown={handleKeyDown}
         />
         {/* dropdown */}
-        {suggestions?.users?.length>=1 && <div className='absolute border-[1px] min-w-64 h-56 rounded-md bg-white overflow-y-scroll'>
+        {suggestions?.users?.length>=1 && <div className='absolute top-12 border-[1px] min-w-64 h-56 rounded-md bg-white overflow-y-scroll'>
           <ul>
             {
-              suggestions?.users?.map((user)=>{
+              suggestions?.users?.map((user, index)=>{
                 return !selectedUsersSet.has(user.email)? (
                 <li key={user.email}
                 onClick={()=>handleAddUser(user)}
-                className='hover:bg-stone-200 cursor-pointer p-3'>
+                className={`hover:bg-stone-200 cursor-pointer p-3 ${index === activeSuggestion? "bg-stone-200":""}`}>
                   {user.firstName} {user.lastName}
                 </li>) : <></>
               }) 
