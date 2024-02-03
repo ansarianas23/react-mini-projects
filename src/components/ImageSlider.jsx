@@ -38,8 +38,12 @@ const ImageSlider = () => {
           className="w-full h-full"/>
       ))}
     </div>
-    <button onClick={prevImage} className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-30 py-5 px-3 rounded-md text-2xl"><FaAngleLeft /></button>
-    <button onClick={nextImage} className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-30 py-5 px-3 rounded-md text-2xl"><FaAngleRight /></button>
+
+    {/* Buttons */}
+    <div className='w-full flex justify-between absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] px-5'>
+      <button onClick={prevImage} className="bg-white bg-opacity-30 py-5 px-3 rounded-md text-2xl"><FaAngleLeft /></button>
+      <button onClick={nextImage} className="bg-white bg-opacity-30 py-5 px-3 rounded-md text-2xl"><FaAngleRight /></button>
+    </div>
   </div>
   )
 }

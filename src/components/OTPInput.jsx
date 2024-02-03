@@ -19,7 +19,10 @@ const OTPInput = () => {
     <div className='w-full h-[calc(h-screen - h-12)]'>
       {!showOtpInput && <form onSubmit={handleSubmit} className='flex flex-col items-center space-y-4'>
         <h1 className='font-semibold text-2xl text-center py-3'>Enter Your Phone Number</h1>
-        <input onChange={(e)=>{setPhoneNumber(e.target.value)}} type="text" placeholder='Enter Your Phone Number Here' className='mx-auto border p-2' />
+        <input onChange={(e)=>{setPhoneNumber(e.target.value)}} 
+        type="text" 
+        placeholder='Enter Your Phone Number Here' 
+        className='mx-auto border p-2 w-72' />
         <button className='bg-black text-white w-fit px-4 py-2 rounded-md'>Send OTP</button>
       </form>}
 

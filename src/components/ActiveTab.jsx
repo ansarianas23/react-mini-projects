@@ -9,7 +9,7 @@ const ActiveTab = () => {
     }
 
   return (
-    <div className='w-[50%] h-fit mx-auto mt-5 border'>
+    <div className='w-[350px] h-fit mx-auto mt-5 border-[1px] border-stone-400'>
       <div className='w-full h-fit border-b-[1px] flex bg-gray-200'>
         <span onClick={()=>handleToggle(1)} className={`${activeTab === 1? "bg-white border-blue-800": ""} w-1/3 text-center font-semibold py-3 border-b-2 cursor-pointer`}>Tab 1</span>
         <span onClick={()=>handleToggle(2)} className={`${activeTab === 2? "bg-white border-blue-800": ""} w-1/3 text-center font-semibold py-3 border-b-2 cursor-pointer`}>Tab 2</span>
